@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "prettier --check \"src/**/*.ts\"",
-    "prepare": "yarn build",
+    "prepare": "npm build",
     "test": "jest"
   },
   "files": [
