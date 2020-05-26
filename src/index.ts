@@ -188,7 +188,6 @@ export async function notarize({
   await delay(10000);
   d('starting to poll for notarization status');
   await waitForNotarize({ uuid, ...authOptions });
-  await stapleApp({ appPath });
 }
 
 function delay(ms: number): Promise<void> {
