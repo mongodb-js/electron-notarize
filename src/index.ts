@@ -56,23 +56,11 @@ function authorizationArgs(rawOpts: NotarizeCredentials): string[] {
 export async function startNotarize(opts: NotarizeStartOptions): Promise<NotarizeResult> {
   d('starting notarize process for app:', opts.appPath);
   return await withTempDir<NotarizeResult>(async dir => {
-    const zipPath = path.resolve(dir, `${path.basename(opts.appPath, '.app')}.zip`);
-    d('zipping application to:', zipPath);
-    const zipResult = await spawn('zip', ['-r', '-y', zipPath, path.basename(opts.appPath)], {
-      cwd: path.dirname(opts.appPath),
-    });
-    if (zipResult.code !== 0) {
-      throw new Error(
-        `Failed to zip application, exited with code: ${zipResult.code}\n\n${zipResult.output}`,
-      );
-    }
-    d('zip succeeded, attempting to upload to Apple');
-
     const notarizeArgs = [
       'altool',
       '--notarize-app',
       '-f',
-      zipPath,
+      opts.appPath,
       '--primary-bundle-id',
       opts.appBundleId,
       ...authorizationArgs(opts),
